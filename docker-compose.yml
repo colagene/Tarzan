@@ -2,6 +2,7 @@ version: '3.8'
 
 services:
   ui:
+    container_name: ui
     image: devopseasylearning/tarzan-ui:v0.0.1
     environment:
       - AUTH_HOST=auth
@@ -16,6 +17,7 @@ services:
       - tarzan
 
   auth:
+    container_name: auth
     image: devopseasylearning/tarzan-auth:v0.0.1
     environment:
       - DB_HOST=db
@@ -26,15 +28,19 @@ services:
       - tarzan
 
   db:
+    container_name: db
     image: mysql:8.0.2
     environment:
       - MYSQL_ROOT_PASSWORD=my-secret-pw
     volumes:
       - db_data:/var/lib/mysql  # Persist MySQL data to named volume
+    # ports:
+    #   - "3306:3306"
     networks:
       - tarzan
 
   weather:
+    container_name: weather
     image: devopseasylearning/tarzan-weather:v0.0.2
     environment:
       - APIKEY=ecbc396f46mshb65cbb1f82cf334p1fcc87jsna5e962a3c542
@@ -42,12 +48,15 @@ services:
       - tarzan
 
   redis:
+    container_name: redis
     image: redis
     environment:
       - REDIS_USER=redis
       - REDIS_PASSWORD=redis
     volumes:
       - redis_data:/data        # Persist Redis data to named volume
+    ports:
+      - "6379:6379"
     networks:
       - tarzan
 
