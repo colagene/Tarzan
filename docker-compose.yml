@@ -20,6 +20,8 @@ services:
     environment:
       - DB_HOST=db
       - DB_PASSWORD=my-secret-pw
+    ports:
+      - "3306:3306"
     networks:
       - tarzan
 
@@ -27,6 +29,8 @@ services:
     image: mysql:8.0.2
     environment:
       - MYSQL_ROOT_PASSWORD=my-secret-pw
+    volumes:
+      - db_data:/var/lib/mysql  # Persist MySQL data to named volume
     networks:
       - tarzan
 
@@ -42,9 +46,15 @@ services:
     environment:
       - REDIS_USER=redis
       - REDIS_PASSWORD=redis
+    volumes:
+      - redis_data:/data        # Persist Redis data to named volume
     networks:
       - tarzan
 
 networks:
   tarzan:
     driver: bridge
+
+volumes:
+  db_data:    # Define named volume for MySQL data persistence
+  redis_data: # Define named volume for Redis data persistence
