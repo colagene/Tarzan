@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  ui:
+    image: devopseasylearning/tarzan-ui:v0.0.1
+    environment:
+      - AUTH_HOST=auth
+      - AUTH_PORT=8080
+      - WEATHER_HOST=weather
+      - WEATHER_PORT=5000
+      - REDIS_USER=redis
+      - REDIS_PASSWORD=redis
+    ports:
+      - "3000:3000"
+    networks:
+      - tarzan
+
+  auth:
+    image: devopseasylearning/tarzan-auth:v0.0.1
+    environment:
+      - DB_HOST=db
+      - DB_PASSWORD=my-secret-pw
+    networks:
+      - tarzan
+
+  db:
+    image: mysql:8.0.2
+    environment:
+      - MYSQL_ROOT_PASSWORD=my-secret-pw
+    networks:
+      - tarzan
+
+  weather:
+    image: devopseasylearning/tarzan-weather:v0.0.2
+    environment:
+      - APIKEY=ecbc396f46mshb65cbb1f82cf334p1fcc87jsna5e962a3c542
+    networks:
+      - tarzan
+
+  redis:
+    image: redis
+    environment:
+      - REDIS_USER=redis
+      - REDIS_PASSWORD=redis
+    networks:
+      - tarzan
+
+networks:
+  tarzan:
+    driver: bridge
